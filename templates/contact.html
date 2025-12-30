@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+  <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Contact Form</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"></head>
+  <body class="bg-light">
+    <div class="container mt-5">
+      <h2 class="mb-3">Contact Details</h2>
+      <form method="POST" class="border p-4 rounded bg-white shadow-sm">
+        {{ form.hidden_tag() }}
+        <div class="mb-3">{{ form.name.label(class="form-label") }}{{ form.name(class="form-control") }}{% for e in form.name.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}</div>
+        <div class="mb-3">{{ form.email.label(class="form-label") }}{{ form.email(class="form-control") }}{% for e in form.email.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}</div>
+        <div class="mb-3">{{ form.phone.label(class="form-label") }}{{ form.phone(class="form-control") }}{% for e in form.phone.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}</div>
+        <div class="mb-3">{{ form.message.label(class="form-label") }}{{ form.message(class="form-control", rows="4") }}{% for e in form.message.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}</div>
+        <button class="btn btn-primary" type="submit">{{ form.submit.label.text }}</button>
+      </form>
+    </div>
+  </body>
+</html>

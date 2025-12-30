@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Update Record</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body class="bg-light">
+
+    <nav class="navbar navbar-expand-lg bg-body-tertiary shadow-sm">
+      <div class="container-fluid">
+        <a class="navbar-brand fw-bold" href="/">Flask App</a>
+      </div>
+    </nav>
+
+    <div class="container mt-5">
+      <h1 class="text-center mb-4">Update Record</h1>
+
+      <form method="POST" class="border p-4 rounded bg-white shadow-sm">
+        {{ form.hidden_tag() }}
+        <div class="mb-3">
+          {{ form.fname.label(class="form-label") }}
+          {{ form.fname(class="form-control") }}
+          {% for e in form.fname.errors %}
+            <div class="text-danger small">{{ e }}</div>
+          {% endfor %}
+        </div>
+
+        <div class="mb-3">
+          {{ form.lname.label(class="form-label") }}
+          {{ form.lname(class="form-control") }}
+          {% for e in form.lname.errors %}
+            <div class="text-danger small">{{ e }}</div>
+          {% endfor %}
+        </div>
+
+        <button type="submit" class="btn btn-success">Update Record</button>
+        <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancel</a>
+      </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Flask Form Example (Secure)</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body class="bg-light">
+
+    <nav class="navbar navbar-expand-lg bg-body-tertiary shadow-sm">
+      <div class="container-fluid">
+        <a class="navbar-brand fw-bold" href="#">Flask App</a>
+        <div>
+          {% if session.user_id %}
+            <a class="btn btn-outline-secondary btn-sm" href="{{ url_for('logout') }}">Logout</a>
+          {% else %}
+            <a class="btn btn-outline-primary btn-sm" href="{{ url_for('login') }}">Login</a>
+            <a class="btn btn-outline-success btn-sm" href="{{ url_for('register') }}">Register</a>
+          {% endif %}
+        </div>
+      </div>
+    </nav>
+
+    <div class="container mt-5">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, msg in messages %}
+            <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+              {{ msg }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      <h1 class="text-center mb-4">Add a New Record</h1>
+
+      <form method="POST" class="border p-4 rounded bg-white shadow-sm">
+        {{ form.hidden_tag() }}
+        <div class="mb-3">
+          {{ form.fname.label(class="form-label") }}
+          {{ form.fname(class="form-control", placeholder="Enter first name") }}
+          {% for err in form.fname.errors %}
+            <div class="text-danger small">{{ err }}</div>
+          {% endfor %}
+        </div>
+
+        <div class="mb-3">
+          {{ form.lname.label(class="form-label") }}
+          {{ form.lname(class="form-control", placeholder="Enter last name") }}
+          {% for err in form.lname.errors %}
+            <div class="text-danger small">{{ err }}</div>
+          {% endfor %}
+        </div>
+
+        <button type="submit" class="btn btn-primary">{{ form.submit.label.text }}</button>
+      </form>
+
+      <hr class="my-5">
+
+      <h2 class="mb-3 text-center">All Records</h2>
+      <table class="table table-striped table-bordered">
+        <thead class="table-dark">
+          <tr>
+            <th scope="col">S.No</th>
+            <th scope="col">First Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for people in allpeople %}
+          <tr>
+            <th scope="row">{{ people.sno }}</th>
+            <td>{{ people.fname }}</td>
+            <td>{{ people.lname }}</td>
+            <td>
+              <a href="{{ url_for('update_entry', sno=people.sno) }}" class="btn btn-outline-dark btn-sm mx-1">Update</a>
+
+              {% if session.user_id %}
+              <form action="{{ url_for('delete_entry', sno=people.sno) }}" method="POST" style="display:inline;">
+                {{ csrf_token() }}
+                <button type="submit" class="btn btn-outline-danger btn-sm mx-1"
+                        onclick="return confirm('Are you sure you want to delete this record?');">
+                  Delete
+                </button>
+              </form>
+              {% else %}
+                <span class="text-muted small">Login to delete</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
